@@ -1,4 +1,4 @@
-if(isAppSubject.toBoolean()){
+if(rootProject.ext.IS_APP_SUBJECT){
     apply plugin: 'com.android.application'
 }else{
     apply plugin: 'com.android.library'
@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
-        if (isAppSubject.toBoolean()) {
+        if (rootProject.ext.IS_APP_SUBJECT) {
             applicationId "com.hl.appsubject"
         }
         kapt {
@@ -30,7 +30,7 @@ android {
 
     //签名配置信息
     signingConfigs {
-        if(isAppSubject.toBoolean()){
+        if(rootProject.ext.IS_APP_SUBJECT){
             debug {
                 storeFile file(AppSubject_JKS_DEBUG_PATH)
             }
@@ -45,7 +45,7 @@ android {
 
     //签名
     buildTypes {
-        if(isAppSubject.toBoolean()){//application
+        if(rootProject.ext.IS_APP_SUBJECT){//application
             debug{
                 signingConfig signingConfigs.release
                 minifyEnabled false
@@ -67,7 +67,7 @@ android {
     }
 
     //打包包名重命名
-    if (isAppSubject.toBoolean()){
+    if (rootProject.ext.IS_APP_SUBJECT){
         applicationVariants.all {
             def buildType = it.buildType.name
             def versionName = it.versionName
@@ -93,7 +93,7 @@ android {
 
     sourceSets {
         main {
-            if (isAppSubject.toBoolean()) {
+            if (rootProject.ext.IS_APP_SUBJECT) {
                 manifest.srcFile 'src/release/AndroidManifest.xml'
             } else {
                 manifest.srcFile 'src/debug/AndroidManifest.xml'
@@ -127,22 +127,4 @@ dependencies {
     implementation project(':coreLib')
     kapt rootProject.ext.dependencies['arouterCompiler']
     kapt rootProject.ext.dependencies['glideGroupCompiler']
-
-    //组件模块管理
-    if (isAppSubjectNeedComponentLogin.toBoolean()) {
-        implementation project(':componentLogin')
-    }
-
-    if (isAppSubjectNeedComponentLog.toBoolean()) {
-        implementation project(':componentLog')
-    }
-
-
-    if (isAppSubjectNeedComponentPush.toBoolean()) {
-        implementation project(':componentPush')
-    }
-
-    if (isAppSubjectNeedComponentUpgrade.toBoolean()) {
-        implementation project(':componentUpgrade')
-    }
 }

@@ -1,4 +1,4 @@
-if(isAppSite.toBoolean()){
+if(rootProject.ext.IS_APP_SITE){
     apply plugin: 'com.android.application'
 }else{
     apply plugin: 'com.android.library'
@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
-        if (isAppSite.toBoolean()) {
+        if (rootProject.ext.IS_APP_SITE) {
             applicationId "com.hl.appsite"
         }
         kapt {
@@ -31,7 +31,7 @@ android {
 
     //签名配置信息
     signingConfigs {
-        if(isAppSite.toBoolean()){
+        if(rootProject.ext.IS_APP_SITE){
             debug {
                 storeFile file(AppSite_JKS_DEBUG_PATH)
             }
@@ -46,7 +46,7 @@ android {
 
     //签名
     buildTypes {
-        if(isAppSite.toBoolean()){//application
+        if(rootProject.ext.IS_APP_SITE){//application
             debug{
                 signingConfig signingConfigs.release
                 minifyEnabled false
@@ -68,7 +68,7 @@ android {
     }
 
     //打包包名重命名
-    if (isAppSite.toBoolean()){
+    if (rootProject.ext.IS_APP_SITE){
         applicationVariants.all {
             def buildType = it.buildType.name
             def versionName = it.versionName
@@ -94,7 +94,7 @@ android {
 
     sourceSets {
         main {
-            if (isAppSite.toBoolean()) {
+            if (rootProject.ext.IS_APP_SITE) {
                 manifest.srcFile 'src/release/AndroidManifest.xml'
             } else {
                 manifest.srcFile 'src/debug/AndroidManifest.xml'
@@ -127,24 +127,4 @@ dependencies {
     implementation project(':coreLib')
     kapt rootProject.ext.dependencies['arouterCompiler']
     kapt rootProject.ext.dependencies['glideGroupCompiler']
-
-
-    //组件模块管理
-    if (isAppSiteNeedComponentLogin.toBoolean()) {
-        implementation project(':componentLogin')
-    }
-
-    if (isAppSiteNeedComponentLog.toBoolean()) {
-        implementation project(':componentLog')
-    }
-
-
-    if (isAppSiteNeedComponentPush.toBoolean()) {
-        implementation project(':componentPush')
-    }
-
-    if (isAppSiteNeedComponentUpgrade.toBoolean()) {
-        implementation project(':componentUpgrade')
-    }
-
 }

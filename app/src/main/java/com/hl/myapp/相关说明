@@ -6,6 +6,10 @@
 所以登录必需要作为一个公用的组件来提供出来,以供基础工程与主app的选择使用;
 登录界面可以存在多套,基本公用登录模块以及基础工程的登录模块;
 
-3. app主工程作为一个壳存在,只提供一个app的入口,以及一些资源初始化操作;
+3. app主工程提供一个app的入口,以及一些资源初始化操作,主界面展示相关内容;
 
 4. 基础工程app之间相同公用的资源需要抽取到Component组件来使用,自己所独有的功能需要在自己的module内部使用;
+
+5. 将工程相关配置放置在 config.gradle文件中,如此在其它 build.gradle文件中可以引用到相关配置信息,例如 rootProject.ext.isApp ,
+也可通过 buildConfigField('Boolean', 'isApp', '"' + rootProject.ext.isApp + '"')放到对应app或者module的BuildConfig文件中,如此代码
+中亦可以引用相关配置信息,方便统一管理;

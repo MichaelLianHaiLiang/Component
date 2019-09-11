@@ -28,8 +28,6 @@ android {
         }
     }
 
-
-
     dataBinding {
         enabled = true
     }
@@ -47,22 +45,5 @@ dependencies {
     implementation project(':coreLib')
     kapt rootProject.ext.dependencies['arouterCompiler']
     kapt rootProject.ext.dependencies['glideGroupCompiler']
-
-    //基础工程模块管理
-    if (isNeedAppCancel.toBoolean()) {
-        implementation project(':appSubject')
-    }
-
-    if (isNeedAppIM.toBoolean()) {
-        implementation project(':appSite')
-    }
-
-    if (isNeedAppSite.toBoolean()) {
-        implementation project(':appIM')
-    }
-
-    if (isNeedAppSubject.toBoolean()) {
-        implementation project(':appCancel')
-    }
 
 }

@@ -11,6 +11,47 @@ def dagger2 = '2.21'
 
 ext {
 
+//配置说明:将工程相关配置放置在 config.gradle文件中,如此在其它 build.gradle文件中可以引用到相关配置信息,例如 rootProject.ext.isApp ,
+//也可通过 buildConfigField('Boolean', 'isApp', '"' + rootProject.ext.isApp + '"')放到对应app或者module的BuildConfig文件中,如此代码
+//中亦可以引用相关配置信息,方便统一管理
+
+//    #主工程 app配置
+//    #主工程 true 代表 主工程是 application , false代表主工程是 library
+//    #如果需要基础工程独立成为app 需要主工程 设置为 false
+    IS_APP=true
+//    #主工程选择需要的 基础工程模块 根据需要配置需要的模块
+//    #销课基础功能
+    IS_NEED_APP_CANCEL=false
+//    #IM基础功能
+    IS_NEED_APP_IM=false
+//    #场地管理基础功能
+    IS_NEED_APP_SITE=false
+//    #课程管理基础功能
+    IS_NEED_APP_SUBJECT=false
+
+//    #####################################################################################
+//    #基础工程 appCancel配置
+//    #基础工程 true 代表 销课模块 application 单独app运行, false代表主工程是 library
+    IS_APP_CANCEL=false
+
+//    #####################################################################################
+//    #基础工程 appIM配置
+//    #基础工程 true 代表 IM通信模块 application 单独app运行, false代表主工程是 library
+    IS_APP_IM=false
+
+//    #####################################################################################
+//    #a基础工程 ppSite配置
+//    #基础工程 true 代表 场地管理模块 application 单独app运行 , false代表主工程是 library
+    IS_APP_SITE=false
+
+//    #####################################################################################
+//    #基础工程 appSubject配置
+//    #基础工程 true 代表 课程管理模块 application 单独app运行 , false代表主工程是 library
+    IS_APP_SUBJECT=false
+}
+
+ext {
+
     //预发环境 需要打包时放开与测试环境切换
 //    BASE_HOST_TEST = "https://testappapi.zbgirls.com/xiaoyou-api/"
 //    H5_BASE_HOST_TEST = "https://101.jimo2020.com/index.html"

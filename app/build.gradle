@@ -1,4 +1,4 @@
-if(isApp.toBoolean()){
+if(rootProject.ext.IS_APP){
     apply plugin: 'com.android.application'
 }else{
     apply plugin: 'com.android.library'
@@ -12,7 +12,7 @@ android {
     defaultConfig {
 
         multiDexEnabled true
-        if(isApp.toBoolean()){
+        if(rootProject.ext.IS_APP){
             applicationId "com.hl.myapp"
         }
 
@@ -31,7 +31,7 @@ android {
 
     //签名配置信息
     signingConfigs {
-        if(isApp.toBoolean()){
+        if(rootProject.ext.IS_APP){
             debug {
                 storeFile file(APP_JKS_DEBUG_PATH)
             }
@@ -46,18 +46,30 @@ android {
 
     //签名
     buildTypes {
-        if(isApp.toBoolean()){//application
+        if(rootProject.ext.IS_APP){//application
             debug{
                 signingConfig signingConfigs.release
                 minifyEnabled false
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+                buildConfigField('String', 'IS_NEED_APP_SUBJECT', '"'+rootProject.ext.IS_NEED_APP_SUBJECT+'"')
+                buildConfigField('String', 'IS_NEED_APP_SITE', '"' + rootProject.ext.IS_NEED_APP_SITE + '"')
+                buildConfigField('String', 'IS_NEED_APP_IM', '"' + rootProject.ext.IS_NEED_APP_IM + '"')
+                buildConfigField('String', 'IS_NEED_APP_CANCEL', '"' + rootProject.ext.IS_NEED_APP_CANCEL + '"')
             }
+
             release {
                 debuggable false
                 jniDebuggable false
                 signingConfig signingConfigs.release
                 minifyEnabled true
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+                buildConfigField('String', 'IS_NEED_APP_SUBJECT', '"'+rootProject.ext.IS_NEED_APP_SUBJECT+'"')
+                buildConfigField('String', 'IS_NEED_APP_SITE', '"' + rootProject.ext.IS_NEED_APP_SITE + '"')
+                buildConfigField('String', 'IS_NEED_APP_IM', '"' + rootProject.ext.IS_NEED_APP_IM + '"')
+                buildConfigField('String', 'IS_NEED_APP_CANCEL', '"' + rootProject.ext.IS_NEED_APP_CANCEL + '"')
+
             }
         }else {//library
             release {
@@ -70,7 +82,7 @@ android {
     //指定清单文件
     sourceSets {
         main {
-            if (isApp.toBoolean()) {
+            if (rootProject.ext.IS_APP) {
                 manifest.srcFile 'src/release/AndroidManifest.xml'
             } else {
                 manifest.srcFile 'src/debug/AndroidManifest.xml'
@@ -78,7 +90,7 @@ android {
         }
     }
 
-    if (isApp.toBoolean()){
+    if (rootProject.ext.IS_APP){
         applicationVariants.all {
             def buildType = it.buildType.name
             def versionName = it.versionName
@@ -120,11 +132,26 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation rootProject.ext.dependencies['test']
     androidTestImplementation rootProject.ext.dependencies['androidTest']
-    kapt rootProject.ext.dependencies['dagger2Compiler']
-    implementation project(':coreLib')
-    kapt rootProject.ext.dependencies['arouterCompiler']
-    kapt rootProject.ext.dependencies['glideGroupCompiler']
+
+    //主工程app作为独立工程提供 需要基础工程作为组件提供 判断需要哪些组件
+    //当基础工程作为独立工程时需要使用公用登录模块就直接依赖此模块使用,不需要时就不依赖,自己独自写一套登录模块
+    if (rootProject.ext.IS_NEED_APP_SUBJECT) {
+        implementation project(':appSubject')
+    }
+
+    if (rootProject.ext.IS_NEED_APP_SITE) {
+        implementation project(':appSite')
+    }
+
+    if (rootProject.ext.IS_NEED_APP_IM) {
+        implementation project(':appIM')
+    }
+
+    if (rootProject.ext.IS_NEED_APP_CANCEL) {
+        implementation project(':appCancel')
+    }
 
     implementation project(':componentLogin')
+    implementation project(':coreLib')
 
 }

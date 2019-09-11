@@ -1,4 +1,4 @@
-if(isAppCancel.toBoolean()){
+if(rootProject.ext.IS_APP_CANCEL){
     apply plugin: 'com.android.application'
 }else{
     apply plugin: 'com.android.library'
@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
-        if (isAppCancel.toBoolean()) {
+        if (rootProject.ext.IS_APP_CANCEL) {
             applicationId "com.hl.appcancel"
         }
 
@@ -32,7 +32,7 @@ android {
 
     //签名配置信息
     signingConfigs {
-        if(isAppCancel.toBoolean()){
+        if(rootProject.ext.IS_APP_CANCEL){
             debug {
                 storeFile file(AppCancel_JKS_DEBUG_PATH)
             }
@@ -47,7 +47,7 @@ android {
 
     //签名
     buildTypes {
-        if(isAppCancel.toBoolean()){//application
+        if(rootProject.ext.IS_APP_CANCEL){//application
             debug{
                 signingConfig signingConfigs.release
                 minifyEnabled false
@@ -69,7 +69,7 @@ android {
     }
 
     //打包包名重命名
-    if (isAppCancel.toBoolean()){
+    if (rootProject.ext.IS_APP_CANCEL){
         applicationVariants.all {
             def buildType = it.buildType.name
             def versionName = it.versionName
@@ -95,7 +95,7 @@ android {
 
     sourceSets {
         main {
-            if (isAppCancel.toBoolean()) {
+            if (rootProject.ext.IS_APP_CANCEL) {
                 manifest.srcFile 'src/release/AndroidManifest.xml'
             } else {
                 manifest.srcFile 'src/debug/AndroidManifest.xml'
@@ -127,22 +127,7 @@ dependencies {
     kapt rootProject.ext.dependencies['arouterCompiler']
     kapt rootProject.ext.dependencies['glideGroupCompiler']
 
-
-    //组件模块管理
-    if (isAppCancelNeedComponentLogin.toBoolean()) {
-        implementation project(':componentLogin')
-    }
-
-    if (isAppCancelNeedComponentLog.toBoolean()) {
-        implementation project(':componentLog')
-    }
-
-    if (isAppCancelNeedComponentPush.toBoolean()) {
-        implementation project(':componentPush')
-    }
-
-    if (isAppCancelNeedComponentUpgrade.toBoolean()) {
-        implementation project(':componentUpgrade')
-    }
+    //组件模块管理 需要就直接引用
+    implementation project(':componentLogin')
 
 }
