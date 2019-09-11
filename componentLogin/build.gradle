@@ -43,8 +43,26 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    kapt rootProject.ext.dependencies['dagger2Compiler']
+    implementation project(':coreLib')
+    kapt rootProject.ext.dependencies['arouterCompiler']
+    kapt rootProject.ext.dependencies['glideGroupCompiler']
+
+    //基础工程模块管理
+    if (isNeedAppCancel.toBoolean()) {
+        implementation project(':appSubject')
+    }
+
+    if (isNeedAppIM.toBoolean()) {
+        implementation project(':appSite')
+    }
+
+    if (isNeedAppSite.toBoolean()) {
+        implementation project(':appIM')
+    }
+
+    if (isNeedAppSubject.toBoolean()) {
+        implementation project(':appCancel')
+    }
+
 }

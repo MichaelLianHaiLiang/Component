@@ -125,38 +125,6 @@ dependencies {
     kapt rootProject.ext.dependencies['arouterCompiler']
     kapt rootProject.ext.dependencies['glideGroupCompiler']
 
-    //基础工程模块管理
-    if (isNeedAppCancel.toBoolean()) {
-        implementation project(':appSubject')
-    }
-
-    if (isNeedAppIM.toBoolean()) {
-        implementation project(':appSite')
-    }
-
-    if (isNeedAppSite.toBoolean()) {
-        implementation project(':appIM')
-    }
-
-    if (isNeedAppSubject.toBoolean()) {
-        implementation project(':appCancel')
-    }
-
-    //组件模块管理
-    if (isAppNeedComponentLogin.toBoolean()) {
-        implementation project(':componentLogin')
-    }
-
-    if (isAppNeedComponentLog.toBoolean()) {
-        implementation project(':componentLog')
-    }
-
-    if (isAppNeedComponentPush.toBoolean()) {
-        implementation project(':componentPush')
-    }
-
-    if (isAppNeedComponentUpgrade.toBoolean()) {
-        implementation project(':componentUpgrade')
-    }
+    implementation project(':componentLogin')
 
 }

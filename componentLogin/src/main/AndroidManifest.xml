@@ -1,2 +1,8 @@
 <manifest
-        package="com.hl.componentlogin"/>
+        package="com.hl.componentlogin">
+
+    <application>
+
+
+    </application>
+</manifest>
