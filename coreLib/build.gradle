@@ -1,0 +1,117 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.android['compileSdkVersion']
+    defaultConfig {
+        minSdkVersion rootProject.ext.android['minSdkVersion']
+        targetSdkVersion rootProject.ext.android['targetSdkVersion']
+        versionCode rootProject.ext.android['versionCode']
+        versionName rootProject.ext.android['versionName']
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+
+        kapt {
+            arguments {
+                arg("moduleName", project.getName())
+            }
+        }
+    }
+
+    buildTypes {
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                buildConfigField('String', 'BASE_HOST', '"' + rootProject.ext.BASE_HOST + '"')
+                buildConfigField('String', 'BASE_HOST_TEST', '"' + rootProject.ext.BASE_HOST_TEST + '"')
+                buildConfigField('String', 'IV_PARAMETER_KEY', '"' + rootProject.ext.IV_PARAMETER_KEY + '"')
+                buildConfigField('String', 'IV_PARAMETER', '"' + rootProject.ext.IV_PARAMETER + '"')
+                buildConfigField('String', 'H5_BASE_HOST_TEST', '"' + rootProject.ext.H5_BASE_HOST_TEST + '"')
+                buildConfigField('String', 'H5_BASE_HOST', '"' + rootProject.ext.H5_BASE_HOST + '"')
+            }
+            debug {
+                buildConfigField('String', 'BASE_HOST', '"' + rootProject.ext.BASE_HOST + '"')
+                buildConfigField('String', 'BASE_HOST_TEST', '"' + rootProject.ext.BASE_HOST_TEST + '"')
+                buildConfigField('String', 'IV_PARAMETER_KEY', '"' + rootProject.ext.IV_PARAMETER_KEY + '"')
+                buildConfigField('String', 'IV_PARAMETER', '"' + rootProject.ext.IV_PARAMETER + '"')
+                buildConfigField('String', 'H5_BASE_HOST_TEST', '"' + rootProject.ext.H5_BASE_HOST_TEST + '"')
+                buildConfigField('String', 'H5_BASE_HOST', '"' + rootProject.ext.H5_BASE_HOST + '"')
+            }
+        }
+    }
+
+    dexOptions {
+        //最大堆内存
+        javaMaxHeapSize "8g"
+        //是否支持大工程模式
+        jumboMode = true
+        //预编译
+        preDexLibraries = true
+        //线程数
+        threadCount = 8
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    //此处设置为true才会引入databinding
+    dataBinding {
+        enabled = true
+    }
+
+    kapt {
+        generateStubs = true
+    }
+
+
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation rootProject.ext.dependencies['test']
+    androidTestImplementation rootProject.ext.dependencies['androidTest']
+    api rootProject.ext.dependencies['androidxSupport']
+    api rootProject.ext.dependencies['androidxExt']
+    api rootProject.ext.dependencies['dagger2']
+    api rootProject.ext.dependencies['androidxLifecycle']
+    //room
+    api rootProject.ext.dependencies['androidxRoom']
+    kapt rootProject.ext.dependencies['roomKapt']
+    api rootProject.ext.dependencies['androidxPaging']
+    api rootProject.ext.dependencies['rxjavaGroup']
+    api rootProject.ext.dependencies['permission']
+    api rootProject.ext.dependencies['immersionBar']
+    api rootProject.ext.dependencies['multidex']
+    api rootProject.ext.dependencies['logger']
+    api rootProject.ext.dependencies['json']
+    api rootProject.ext.dependencies['retrofitGroup']
+    api rootProject.ext.dependencies['okHttpGroup']
+    //glide
+    api rootProject.ext.dependencies['glideGroup']
+    kapt rootProject.ext.dependencies['glideGroupCompiler']
+    //ARouter
+    api rootProject.ext.dependencies['arouter']
+    kapt rootProject.ext.dependencies['arouterCompiler']
+    api rootProject.ext.dependencies['keyboardwatcher']
+    kapt rootProject.ext.dependencies['dagger2Compiler']
+    api rootProject.ext.dependencies['takePhoto']
+    compileOnly rootProject.ext.dependencies['gpuimage']
+    api rootProject.ext.dependencies['svg-player']
+
+    api rootProject.ext.dependencies['refresh']
+    api rootProject.ext.dependencies['bga-banner']
+
+    api rootProject.ext.dependencies['zixing']
+    api rootProject.ext.dependencies['screen-shot']
+
+    api rootProject.ext.dependencies['coroutines']
+    api rootProject.ext.dependencies['ktx']
+}

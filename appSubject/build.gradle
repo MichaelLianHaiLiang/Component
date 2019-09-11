@@ -1,0 +1,148 @@
+if(isAppSubject.toBoolean()){
+    apply plugin: 'com.android.application'
+}else{
+    apply plugin: 'com.android.library'
+}
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.android['compileSdkVersion']
+    defaultConfig {
+        minSdkVersion rootProject.ext.android['minSdkVersion']
+        targetSdkVersion rootProject.ext.android['targetSdkVersion']
+        versionCode rootProject.ext.android['versionCode']
+        versionName rootProject.ext.android['versionName']
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+        if (isAppSubject.toBoolean()) {
+            applicationId "com.hl.appsubject"
+        }
+        kapt {
+            arguments {
+                arg("moduleName", project.getName())
+            }
+        }
+    }
+
+    //签名配置信息
+    signingConfigs {
+        if(isAppSubject.toBoolean()){
+            debug {
+                storeFile file(AppSubject_JKS_DEBUG_PATH)
+            }
+            release {
+                storeFile file(AppSubject_JKS_PATH)
+                storePassword AppSubject_JKS_STORE_PASSWORD
+                keyAlias AppSubject_JKS_ALIAS
+                keyPassword AppSubject_JKS_PASSWORD
+            }
+        }
+    }
+
+    //签名
+    buildTypes {
+        if(isAppSubject.toBoolean()){//application
+            debug{
+                signingConfig signingConfigs.release
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            }
+            release {
+                debuggable false
+                jniDebuggable false
+                signingConfig signingConfigs.release
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            }
+        }else {//library
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            }
+        }
+    }
+
+    //打包包名重命名
+    if (isAppSubject.toBoolean()){
+        applicationVariants.all {
+            def buildType = it.buildType.name
+            def versionName = it.versionName
+            def versionCode = it.versionCode
+            def fileName
+            it.outputs.each {
+                fileName = "appSubject_${buildType}_${versionName}_${versionCode}.apk"
+                it.outputFileName = fileName
+            }
+        }
+    }
+
+    dexOptions {
+        //最大堆内存
+        javaMaxHeapSize "8g"
+        //是否支持大工程模式
+        jumboMode = true
+        //预编译
+        preDexLibraries = true
+        //线程数
+        threadCount = 8
+    }
+
+    sourceSets {
+        main {
+            if (isAppSubject.toBoolean()) {
+                manifest.srcFile 'src/release/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/debug/AndroidManifest.xml'
+            }
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+
+
+    kapt {
+        generateStubs = true
+    }
+
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation rootProject.ext.dependencies['test']
+    androidTestImplementation rootProject.ext.dependencies['androidTest']
+    kapt rootProject.ext.dependencies['dagger2Compiler']
+    implementation project(':coreLib')
+    kapt rootProject.ext.dependencies['arouterCompiler']
+    kapt rootProject.ext.dependencies['glideGroupCompiler']
+
+    //组件模块管理
+    if (isAppSubjectNeedComponentLogin.toBoolean()) {
+        implementation project(':componentLogin')
+    }
+
+    if (isAppSubjectNeedComponentLog.toBoolean()) {
+        implementation project(':componentLog')
+    }
+
+
+    if (isAppSubjectNeedComponentPush.toBoolean()) {
+        implementation project(':componentPush')
+    }
+
+    if (isAppSubjectNeedComponentUpgrade.toBoolean()) {
+        implementation project(':componentUpgrade')
+    }
+}

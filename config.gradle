@@ -1,0 +1,164 @@
+import java.text.SimpleDateFormat
+
+def sdf = new SimpleDateFormat("yyMMddHHmm")
+def time = sdf.format(new Date())
+def verCode = Integer.valueOf(time)
+def androidxWorkManager = '1.0.0-rc02'
+def androidxLifecycle = '2.0.0'
+def androidxPaging = '2.1.0'
+def androidxRoom = '2.1.0-alpha04'
+def dagger2 = '2.21'
+
+ext {
+
+    //预发环境 需要打包时放开与测试环境切换
+//    BASE_HOST_TEST = "https://testappapi.zbgirls.com/xiaoyou-api/"
+//    H5_BASE_HOST_TEST = "https://101.jimo2020.com/index.html"
+
+    //测试环境
+    BASE_HOST_TEST = "https://testxiaoyou.aixiaoxinim.com/xiaoyou-api/"
+    H5_BASE_HOST_TEST = "https://85.aixiaoxinim.com/index.html"
+
+    //正式环境
+    BASE_HOST = "https://appapi.zbgirls.com/xiaoyou-api/"
+    H5_BASE_HOST = "https://h5.zbgirls.com/index.html"
+
+    IV_PARAMETER_KEY = "aZ3RvSU7tatsfQqS"
+    IV_PARAMETER = "IRbX0r0VIDzbXvAi"
+
+    android = [compileSdkVersion     : 28,
+               buildToolsVersion     : "28.0.3",
+//               applicationId         : "com.xytyandroid.xiaoyou",
+               minSdkVersion         : 19,
+               targetSdkVersion      : 28,
+               versionCode           : verCode,
+               versionName           : "2.0.1",
+               appSourceCompatibility: 1.8,
+               appTargetCompatibility: 1.8]
+
+    dependencies = [
+            "androidxWorkManager": ["android.arch.work:work-runtime-ktx:${androidxWorkManager}",
+                                    "android.arch.work:work-rxjava2:${androidxWorkManager}"],
+
+            "androidxSupport"    : ["androidx.appcompat:appcompat:1.1.0-rc01",
+                                    "androidx.constraintlayout:constraintlayout:1.1.3",
+                                    "com.google.android.material:material:1.1.0-alpha03",
+                                    "androidx.recyclerview:recyclerview:1.1.0-alpha02",
+                                    "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha02",
+                                    "androidx.viewpager2:viewpager2:1.0.0-alpha01"],
+
+            "androidxExt"        : ['androidx.core:core-ktx:1.1.0-alpha04',
+                                    "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+                                    "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"],
+
+            "androidxLifecycle"  : ["androidx.lifecycle:lifecycle-extensions:${androidxLifecycle}",
+                                    "androidx.lifecycle:lifecycle-common:${androidxLifecycle}",
+                                    "androidx.lifecycle:lifecycle-reactivestreams:${androidxLifecycle}"],
+
+            "androidxPaging"     : ["androidx.paging:paging-runtime:${androidxPaging}",
+                                    "androidx.paging:paging-rxjava2:${androidxPaging}"],
+
+            "androidxRoom"       : ["androidx.room:room-runtime:${androidxRoom}",
+                                    "androidx.room:room-rxjava2:${androidxRoom}",
+                                    "androidx.room:room-coroutines:${androidxRoom}"],
+
+            "roomKapt"           : ["androidx.room:room-compiler:${androidxRoom}"],
+
+            "coroutines"         : ["org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0"],
+
+            "ktx"                : ["androidx.activity:activity-ktx:1.1.0-alpha03",
+                                    "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha03",
+                                    "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha04"],
+
+            "androidTest"        : ["androidx.test:runner:1.1.2-alpha01",
+                                    "androidx.test.espresso:espresso-core:3.1.2-alpha01",
+                                    "android.arch.work:work-testing:${androidxWorkManager}"],
+
+            "test"               : ["junit:junit:4.12",
+                                    "androidx.arch.core:core-testing:${androidxLifecycle}",
+                                    "androidx.paging:paging-common:${androidxPaging}",
+                                    "androidx.room:room-testing:${androidxRoom}"],
+
+            "kapt"               : ["androidx.lifecycle:lifecycle-compiler:${androidxLifecycle}"],
+
+            "permission"         : ["com.github.tbruyelle:rxpermissions:0.10.2"],
+
+            "immersionBar"       : ["com.gyf.immersionbar:immersionbar:2.3.3"],
+
+            "rxjavaGroup"        : ["io.reactivex.rxjava2:rxjava:2.2.7",
+                                    "com.trello.rxlifecycle3:rxlifecycle-android-lifecycle-kotlin:3.0.0",
+                                    "io.reactivex.rxjava2:rxandroid:2.1.1"],
+
+            "retrofitGroup"      : ["com.squareup.retrofit2:retrofit:2.4.0",
+                                    "com.squareup.retrofit2:converter-gson:2.4.0",
+                                    "com.squareup.retrofit2:adapter-rxjava2:2.4.0"],
+
+            "okHttpGroup"        : ["com.squareup.okio:okio:2.1.0",
+                                    "com.squareup.okhttp3:okhttp:3.11.0",
+                                    "com.squareup.okhttp3:logging-interceptor:3.11.0"],
+
+            "glideGroup"         : ["com.github.bumptech.glide:glide:4.8.0",
+                                    "jp.wasabeef:glide-transformations:3.3.0"],
+
+            "glideGroupCompiler" : ["com.github.bumptech.glide:compiler:4.8.0"],
+
+            "dagger2"            : ["com.google.dagger:dagger:${dagger2}",
+                                    "com.google.dagger:dagger-android:${dagger2}",
+                                    "com.google.dagger:dagger-android-support:${dagger2}"],
+
+            "dagger2Compiler"    : ["com.google.dagger:dagger-compiler:${dagger2}",
+                                    "com.google.dagger:dagger-android-processor:${dagger2}"],
+
+            "multidex"           : 'androidx.multidex:multidex:2.0.0',
+
+            "logger"             : 'com.orhanobut:logger:2.2.0',
+
+            "json"               : ["com.google.code.gson:gson:2.8.5",
+                                    "com.alibaba:fastjson:1.1.68.android"],
+
+            "arouter"            : ["com.alibaba:arouter-api:1.3.1"],
+
+            "arouterCompiler"    : ["com.alibaba:arouter-compiler:1.1.4"],
+
+            "keyboardwatcher"    : ["com.azimolabs.keyboardwatcher:keyboardwatcher:0.1.3"],
+
+            "takePhoto"          : ["com.soundcloud.android.crop:lib_crop:1.0.0",
+                                    "com.darsh.multipleimageselect:multipleimageselect:1.0.5",
+                                    "me.shaohui.advancedluban:library:1.3.2"],
+
+            "indicator"          : ["com.github.hackware1993:MagicIndicator:1.5.0"],
+
+//            "videoPlayerBase"        : ["com.shuyu:gsyVideoPlayer-base:6.0.3",
+//                                        "com.shuyu:gsyvideoplayer-androidvideocache:6.0.3",
+//                                        "com.shuyu:gsyVideoPlayer-armv5:6.0.3",
+//                                        "com.shuyu:gsyVideoPlayer-armv7a:6.0.3",
+//                                        "com.shuyu:gsyVideoPlayer-arm64:6.0.3"],
+
+            "gpuimage"           : ["jp.co.cyberagent.android:gpuimage:2.0.3"],
+
+            "oss"                : ["com.aliyun.dpa:oss-android-sdk:2.9.2"],
+
+            "discrete-seekbar"   : 'org.adw.library:discrete-seekbar:1.0.1',
+
+            "refresh"            : ["com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-4",
+                                    "com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-andx-4"],
+
+
+            "svg-player"         : 'com.github.yyued:SVGAPlayer-Android:2.4.2',
+
+            "bugly"              : ["com.tencent.bugly:crashreport_upgrade:1.3.8",
+                                    "com.tencent.bugly:nativecrashreport:3.6.0"],
+
+
+            "bga-banner"         : ["cn.bingoogolapple:bga-banner:2.2.6@aar"],
+
+            "zixing"             : ["com.google.zxing:core:3.3.3"],
+
+            "screen-shot"        : ["com.github.nisrulz:screenshott:2.0.0"]
+
+
+    ]
+
+
+}
+
